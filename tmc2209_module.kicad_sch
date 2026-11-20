@@ -1446,6 +1446,28 @@
 		)
 		(uuid "f962958c-c180-45f6-9183-151fc371c7b0")
 	)
+	(hierarchical_label "DIR"
+		(shape input)
+		(at 116.84 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "10f8850d-8108-4cba-afa5-06727a127d09")
+	)
+	(hierarchical_label "STEP"
+		(shape input)
+		(at 116.84 63.5 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "2fb9b912-e152-4082-9d99-aaba096cefed")
+	)
 	(hierarchical_label "EN"
 		(shape input)
 		(at 116.84 78.74 0)
@@ -2172,188 +2194,6 @@
 				)
 				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/ee822569-4e0a-4a5e-b4e3-c8efb20246b0"
 					(reference "#PWR049")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 116.84 60.96 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "cb97649b-7cac-40e3-abb2-04bd54ef24fc")
-		(property "Reference" "#PWR056"
-			(at 123.19 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GNDREF"
-			(at 120.65 60.9599 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 116.84 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 116.84 60.96 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "c95cc1eb-9d18-4fc7-9433-db1fc365aaef")
-		)
-		(instances
-			(project "air-hockey"
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/00343427-8f18-4653-869d-6c0a41c46194"
-					(reference "#PWR058")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/4675ae49-10d9-427f-a8a4-742801213a07"
-					(reference "#PWR056")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/4a002c69-ee2a-4214-9fe6-69e23adfc0e0"
-					(reference "#PWR059")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/ee822569-4e0a-4a5e-b4e3-c8efb20246b0"
-					(reference "#PWR057")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 116.84 63.5 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "e685a3b4-65f6-4830-8361-d0fecb6a0863")
-		(property "Reference" "#PWR052"
-			(at 123.19 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GNDREF"
-			(at 120.65 63.4999 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 116.84 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 116.84 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 116.84 63.5 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "1ca8876f-a733-4589-860e-a24d2d97601d")
-		)
-		(instances
-			(project "air-hockey"
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/00343427-8f18-4653-869d-6c0a41c46194"
-					(reference "#PWR054")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/4675ae49-10d9-427f-a8a4-742801213a07"
-					(reference "#PWR052")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/4a002c69-ee2a-4214-9fe6-69e23adfc0e0"
-					(reference "#PWR055")
-					(unit 1)
-				)
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/ee822569-4e0a-4a5e-b4e3-c8efb20246b0"
-					(reference "#PWR053")
 					(unit 1)
 				)
 			)

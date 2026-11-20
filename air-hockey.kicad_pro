@@ -463,9 +463,9 @@
       "endpoint_off_grid": "warning",
       "extra_units": "error",
       "field_name_whitespace": "warning",
-      "footprint_filter": "ignore",
+      "footprint_filter": "warning",
       "footprint_link_issues": "warning",
-      "four_way_junction": "ignore",
+      "four_way_junction": "warning",
       "ground_pin_not_ground": "warning",
       "hier_label_mismatch": "error",
       "isolated_pin_label": "warning",
@@ -483,15 +483,15 @@
       "no_connect_dangling": "warning",
       "pin_not_connected": "error",
       "pin_not_driven": "error",
-      "pin_to_pin": "warning",
+      "pin_to_pin": "error",
       "power_pin_not_driven": "error",
       "same_local_global_label": "warning",
       "same_local_global_power": "warning",
       "similar_label_and_power": "warning",
       "similar_labels": "warning",
       "similar_power": "warning",
-      "simulation_model_issue": "ignore",
-      "single_global_label": "ignore",
+      "simulation_model_issue": "warning",
+      "single_global_label": "warning",
       "stacked_pin_name": "warning",
       "unannotated": "error",
       "unconnected_wire_endpoint": "warning",
@@ -696,7 +696,7 @@
         "uuid": "df3ecf00-7553-48e7-93f5-87bdb92e0edf"
       }
     ],
-    "used_designators": "#PWR1-59,J1-10,R1,U1",
+    "used_designators": "#FLG1-6,#PWR1-59,J1-12,R1,U1-2",
     "variants": []
   },
   "sheets": [
@@ -719,6 +719,10 @@
     [
       "4a002c69-ee2a-4214-9fe6-69e23adfc0e0",
       "TMC2209 Module 3"
+    ],
+    [
+      "6ec40c36-2511-4eab-85e1-44b52cee0063",
+      "ESP32-H2 Headers"
     ]
   ],
   "text_variables": {},
