@@ -1,52 +1,8 @@
 #include <Arduino.h>
-#include <TMC2209.h>
 #include <FastAccelStepper.h>
+#include "constants.h"
 
 #define SETUP_MOTOR(X, x) setup_motor(x ## _driver, x ## _stepper, X ## _SERIAL_ADDR, X ## _STEP_PIN, X ## _DIR_PIN)
-
-constexpr int BAUD_RATE = 115200;
-
-constexpr int RX_PIN = 22;
-constexpr int TX_PIN = 12;
-
-constexpr int RUN_CURRENT_PERCENT = 100;
-constexpr int HOLD_CURRENT_PERCENT = 5;
-constexpr int MAX_VELOCITY = 100;
-constexpr int MAX_ACCEL = 100;
-constexpr int REPLY_DELAY = 4;
-constexpr int FULL_STEPS_PER_REV = 200;
-constexpr int MICROSTEPS = 256;
-constexpr int STEPS_PER_REV = FULL_STEPS_PER_REV * MICROSTEPS;
-
-constexpr double TABLE_WIDTH = 0.889;
-constexpr double TABLE_HEIGHT = 0.9144;
-constexpr double PADDLE_ATTACHMENT_RADIUS = 0.023;
-constexpr double SPOOL_RADIUS = 0.0125;
-constexpr double CABLE_HEIGHT_DIFFERENCE = 0.004;
-
-// Back Left Motor
-constexpr TMC2209::SerialAddress BL_SERIAL_ADDR = TMC2209::SERIAL_ADDRESS_1;
-constexpr bool BL_INVERSION = false;
-constexpr int BL_DIR_PIN = 0;
-constexpr int BL_STEP_PIN = 1;
-
-// Back Right Motor
-constexpr TMC2209::SerialAddress BR_SERIAL_ADDR = TMC2209::SERIAL_ADDRESS_2;
-constexpr bool BR_INVERSION = false;
-constexpr int BR_DIR_PIN = -1;
-constexpr int BR_STEP_PIN = -1;
-
-// Front Left Motor
-constexpr TMC2209::SerialAddress FL_SERIAL_ADDR = TMC2209::SERIAL_ADDRESS_3;
-constexpr bool FL_INVERSION = false;
-constexpr int FL_DIR_PIN = -1;
-constexpr int FL_STEP_PIN = -1;
-
-// Front Right Motor
-constexpr TMC2209::SerialAddress FR_SERIAL_ADDR = TMC2209::SERIAL_ADDRESS_0;
-constexpr bool FR_INVERSION = false;
-constexpr int FR_DIR_PIN = 10;
-constexpr int FR_STEP_PIN = 11;
 
 struct CableLengths {
   double bl;
@@ -83,7 +39,7 @@ void setup_motor(TMC2209& driver, FastAccelStepper*& stepper, TMC2209::SerialAdd
   driver.setup(Serial1, BAUD_RATE, addr, RX_PIN, TX_PIN);
   driver.setReplyDelay(REPLY_DELAY);
   driver.setRunCurrent(RUN_CURRENT_PERCENT);
-  // driver.setHoldCurrent(HOLD_CURRENT_PERCENT);
+  driver.setHoldCurrent(HOLD_CURRENT_PERCENT);
   driver.setMicrostepsPerStep(MICROSTEPS);
   driver.disableStealthChop();
   driver.enable();
@@ -126,29 +82,41 @@ void log_motor(const char *name, FastAccelStepper *stepper) {
   Serial.println(stepper->getCurrentAcceleration());
 }
 
+double tangent_length(Point pulley, Point attachment) {
+    double dx = attachment.x - pulley.x;
+    double dy = attachment.y - pulley.y;
+
+    double horizontal_distance_squared = dx * dx + dy * dy;
+
+    double tangent_squared =
+        horizontal_distance_squared -
+        SPOOL_RADIUS * SPOOL_RADIUS;
+
+    if (tangent_squared < 0.0) {
+        Serial.println("ERROR: Attachment inside pulley radius!");
+        return NAN;
+    }
+
+    return std::sqrt(
+        tangent_squared +
+        CABLE_HEIGHT_DIFFERENCE * CABLE_HEIGHT_DIFFERENCE
+    );
+}
+
 CableLengths calculate_cable_lengths(double x, double y) {
-  double diagonal = PADDLE_ATTACHMENT_RADIUS / std::sqrt(2.0);
+    double diagonal = PADDLE_ATTACHMENT_RADIUS / std::sqrt(2.0);
 
-  double bl_x = x - diagonal;
-  double bl_y = y - diagonal;
+    Point bl_attachment = {x - diagonal, y - diagonal};
+    Point br_attachment = {x + diagonal, y - diagonal};
+    Point fl_attachment = {x - diagonal, y + diagonal};
+    Point fr_attachment = {x + diagonal, y + diagonal};
 
-  double br_x = x + diagonal;
-  double br_y = y - diagonal;
-
-  double fl_x = x - diagonal;
-  double fl_y = y + diagonal;
-
-  double fr_x = x + diagonal;
-  double fr_y = y + diagonal;
-
-  double dz = CABLE_HEIGHT_DIFFERENCE;
-
-  return {
-    .bl = std::sqrt(bl_x * bl_x + bl_y * bl_y + dz * dz),
-    .br = std::sqrt((TABLE_WIDTH - br_x) * (TABLE_WIDTH - br_x) + br_y * br_y + dz * dz),
-    .fl = std::sqrt(fl_x * fl_x + (TABLE_HEIGHT - fl_y) * (TABLE_HEIGHT - fl_y) + dz * dz),
-    .fr = std::sqrt((TABLE_WIDTH - fr_x) * (TABLE_WIDTH - fr_x) + (TABLE_HEIGHT - fr_y) * (TABLE_HEIGHT - fr_y) + dz * dz),
-  };
+    return {
+        .bl = tangent_length(BL_PULLEY, bl_attachment),
+        .br = tangent_length(BR_PULLEY, br_attachment),
+        .fl = tangent_length(FL_PULLEY, fl_attachment),
+        .fr = tangent_length(FR_PULLEY, fr_attachment),
+    };
 }
 
 void initialize_reference(double x, double y) {
@@ -206,7 +174,7 @@ void setup() {
   
   delay(1000);
 
-  initialize_reference(0, 0);
+  initialize_reference(PADDLE_RADIUS, PADDLE_RADIUS);
 }
 
 double read_double() {
@@ -216,11 +184,23 @@ double read_double() {
   return d;
 }
 
+bool check_valid_target(double x, double y) {
+  if (x > (TABLE_WIDTH - PADDLE_RADIUS) || x < PADDLE_RADIUS)
+    return false;
+  if (y > (TABLE_HEIGHT - PADDLE_RADIUS) || y < PADDLE_RADIUS)
+    return false;
+  return true;
+}
+
 void loop() {
   if (!check_motors_communicating()) return;
 
   double x = read_double();
   double y = read_double();
+  if (!check_valid_target(x, y)) {
+    Serial.printf("\nTarget position (%f, %f) is outside bounds\n", x, y);
+    return;
+  }
 
   Serial.printf("\nTracking target position (%f, %f)\n", x, y);
   set_target(x, y);
