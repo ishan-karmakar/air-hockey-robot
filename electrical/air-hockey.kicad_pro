@@ -547,10 +547,6 @@
     "netclass_patterns": [
       {
         "netclass": "Large Power",
-        "pattern": "GNDPWR"
-      },
-      {
-        "netclass": "Large Power",
         "pattern": "+24V"
       }
     ]

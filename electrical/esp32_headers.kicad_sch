@@ -683,7 +683,7 @@
 			)
 			(embedded_fonts no)
 		)
-		(symbol "power:GNDREF"
+		(symbol "power:GND"
 			(power global)
 			(pin_numbers
 				(hide yes)
@@ -708,7 +708,7 @@
 					)
 				)
 			)
-			(property "Value" "GNDREF"
+			(property "Value" "GND"
 				(at 0 -3.81 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -740,7 +740,7 @@
 					)
 				)
 			)
-			(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
+			(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -762,46 +762,10 @@
 					)
 				)
 			)
-			(symbol "GNDREF_0_1"
+			(symbol "GND_0_1"
 				(polyline
 					(pts
-						(xy -0.635 -1.905) (xy 0.635 -1.905)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy -0.127 -2.54) (xy 0.127 -2.54)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 0 -1.27) (xy 0 0)
-					)
-					(stroke
-						(width 0)
-						(type default)
-					)
-					(fill
-						(type none)
-					)
-				)
-				(polyline
-					(pts
-						(xy 1.27 -1.27) (xy -1.27 -1.27)
+						(xy 0 0) (xy 0 -1.27) (xy 1.27 -1.27) (xy 0 -2.54) (xy -1.27 -1.27) (xy 0 -1.27)
 					)
 					(stroke
 						(width 0)
@@ -812,7 +776,7 @@
 					)
 				)
 			)
-			(symbol "GNDREF_1_1"
+			(symbol "GND_1_1"
 				(pin power_in line
 					(at 0 0 270)
 					(length 0)
@@ -1295,6 +1259,85 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 90.17 45.72 90)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "300a8976-1e13-447f-b1b3-5f71b38dcf11")
+		(property "Reference" "#PWR07"
+			(at 96.52 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "GND"
+			(at 93.98 45.7199 90)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(property "Footprint" ""
+			(at 90.17 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 90.17 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 90.17 45.72 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "879619e8-847d-4f5b-86fb-6551520e347a")
+		)
+		(instances
+			(project "air-hockey"
+				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/6ec40c36-2511-4eab-85e1-44b52cee0063"
+					(reference "#PWR07")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Generic:Conn_01x15")
 		(at 80.01 63.5 180)
 		(unit 1)
@@ -1430,85 +1473,6 @@
 			(project "air-hockey"
 				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/6ec40c36-2511-4eab-85e1-44b52cee0063"
 					(reference "J12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GNDREF")
-		(at 90.17 45.72 90)
-		(unit 1)
-		(body_style 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(in_pos_files yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "99db94a9-6040-481d-9d64-542ec3ac95f7")
-		(property "Reference" "#PWR07"
-			(at 96.52 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "GNDREF"
-			(at 93.98 45.7199 90)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 90.17 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Datasheet" ""
-			(at 90.17 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GNDREF\" , reference supply ground"
-			(at 90.17 45.72 0)
-			(hide yes)
-			(show_name no)
-			(do_not_autoplace no)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(pin "1"
-			(uuid "2799e4dd-12ef-4c7a-953c-a26e76e19f56")
-		)
-		(instances
-			(project "air-hockey"
-				(path "/df3ecf00-7553-48e7-93f5-87bdb92e0edf/6ec40c36-2511-4eab-85e1-44b52cee0063"
-					(reference "#PWR07")
 					(unit 1)
 				)
 			)
