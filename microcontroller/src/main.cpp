@@ -53,23 +53,24 @@ void setup_motor(TMC2209& driver, FastAccelStepper*& stepper, TMC2209::SerialAdd
 }
 
 bool check_motors_communicating() {
+  bool comms = true;
   if (!bl_driver.isSetupAndCommunicating()) {
     Serial.println("Back left stepper driver not setup and communicating!");
-    // return false;
+    comms = false;
   }
-  // if (!br_driver.isSetupAndCommunicating()) {
-  //   Serial.println("Back right stepper driver not setup and communicating!");
-  //   return false;
-  // }
-  // if (!fl_driver.isSetupAndCommunicating()) {
-  //   Serial.println("Front left stepper driver not setup and communicating!");
-  //   return false;
-  // }
+  if (!br_driver.isSetupAndCommunicating()) {
+    Serial.println("Back right stepper driver not setup and communicating!");
+    comms = false;
+  }
+  if (!fl_driver.isSetupAndCommunicating()) {
+    Serial.println("Front left stepper driver not setup and communicating!");
+    comms = false;
+  }
   if (!fr_driver.isSetupAndCommunicating()) {
     Serial.println("Front right stepper driver not setup and communicating!");
-    // return false;
+    comms = false;
   }
-  return true;
+  return comms;
 }
 
 void log_motor(const char *name, FastAccelStepper *stepper) {
@@ -124,10 +125,8 @@ void initialize_reference(double x, double y) {
 
   initial_motor_positions = {
     .bl = bl_stepper->getCurrentPosition(),
-    .br = 0,
-    .fl = 0,
-    // .br = br_stepper->getCurrentPosition(),
-    // .fl = fl_stepper->getCurrentPosition(),
+    .br = br_stepper->getCurrentPosition(),
+    .fl = fl_stepper->getCurrentPosition(),
     .fr = fr_stepper->getCurrentPosition(),
   };
 
@@ -158,8 +157,8 @@ void set_target(double x, double y) {
   long fr_target = initial_motor_positions.fr + fr_steps;
 
   bl_stepper->moveTo(bl_target);
-  // br_stepper->moveTo(br_target);
-  // fl_stepper->moveTo(fl_target);
+  br_stepper->moveTo(br_target);
+  fl_stepper->moveTo(fl_target);
   fr_stepper->moveTo(fr_target);
 }
 
@@ -168,8 +167,8 @@ void setup() {
 
   engine.init();
   SETUP_MOTOR(BL, bl);
-  // SETUP_MOTOR(BR, br);
-  // SETUP_MOTOR(FL, fl);
+  SETUP_MOTOR(BR, br);
+  SETUP_MOTOR(FL, fl);
   SETUP_MOTOR(FR, fr);
   
   delay(1000);
@@ -177,11 +176,17 @@ void setup() {
   initialize_reference(PADDLE_RADIUS, PADDLE_RADIUS);
 }
 
-double read_double() {
-  while (!Serial.available());
-  double d = Serial.parseFloat();
-  while (Serial.available() > 0) Serial.read();
-  return d;
+bool read_target(double& x, double& y) {
+  if (!Serial.available()) return false;
+
+  String input = Serial.readStringUntil('\n');
+  int comma = input.indexOf(',');
+  if (comma < 0) return false;
+
+  x = input.substring(0, comma).toDouble();
+  y = input.substring(comma + 1).toDouble();
+
+  return true;
 }
 
 bool check_valid_target(double x, double y) {
@@ -193,17 +198,17 @@ bool check_valid_target(double x, double y) {
 }
 
 void loop() {
+  // bl_driver.moveAtVelocity(50 * MICROSTEPS);
+  // Serial.printf("Stall guard value: %d\n", bl_driver.getStallGuardResult());
   if (!check_motors_communicating()) return;
 
-  double x = read_double();
-  double y = read_double();
+  double x, y;
+  if (!read_target(x, y)) return;
   if (!check_valid_target(x, y)) {
-    Serial.printf("\nTarget position (%f, %f) is outside bounds\n", x, y);
+    Serial.printf("Target position (%f, %f) is outside bounds\n", x, y);
     return;
   }
 
-  Serial.printf("\nTracking target position (%f, %f)\n", x, y);
+  Serial.printf("Tracking target position (%f, %f)\n", x, y);
   set_target(x, y);
-
-  delay(20);
 }
